@@ -1,3 +1,7 @@
+/**
+ * Author: Daniel Comboni
+ */
+
 package general_goutils
 
 import "reflect"
