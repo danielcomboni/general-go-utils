@@ -4,17 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"github.com/Jeffail/gabs"
 )
 
 
-
-
-// ParseIncoming http request body sets the root property as "data"
+// ParseIncoming sets the root property as "data"
 func ParseIncoming(r *http.Request) (interface{}, error) {
-	log.Println("parse incoming data to json for manipulation")
+	Logger.Info("parse incoming data to json for manipulation")
 	body, _ := ioutil.ReadAll(r.Body)
 	jsonParsed, err := gabs.ParseJSON(body) // parsed incoming data
 
@@ -31,7 +28,7 @@ func ParseIncoming(r *http.Request) (interface{}, error) {
 	var i interface{}
 	if err != nil {
 		msg := "failed to parse incoming data: " + err.Error()
-		fmt.Println(msg)
+		Logger.Info(msg)
 		return nil, err
 	}
 	i = jsonParsed.Path("data").Data()
@@ -55,7 +52,7 @@ func GetIncomingCaseRoot(r *http.Request, shouldLog bool) (*gabs.Container, erro
 
 	if err != nil {
 		msg := "failed to parse incoming data: " + err.Error()
-		fmt.Println(msg)
+		Logger.Error(msg)
 		return nil, err
 	}
 
@@ -80,7 +77,7 @@ func GetFromByteArray(b []byte) (*gabs.Container, error) {
 
 	if err != nil {
 		msg := "failed to parse incoming data: " + err.Error()
-		fmt.Println(msg)
+		Logger.Info(msg)
 		return nil, err
 	}
 	return jsonParsed, nil
