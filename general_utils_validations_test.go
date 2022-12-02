@@ -2,6 +2,10 @@ package general_goutils
 
 import "testing"
 
+func TestIsNullOrEmpty(t *testing.T) {
+	result := IsNullOrEmpty(1)
+	println(result)
+}
 
 func TestIsGreaterThan(t *testing.T) {
 	result := IsGreaterThan(1,0)
