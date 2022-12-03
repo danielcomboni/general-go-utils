@@ -7,7 +7,6 @@ import (
 
 	"github.com/ohler55/ojg/jp"
 	"github.com/ohler55/ojg/oj"
-	"github.com/ohler55/ojg/pretty"
 )
 
 
@@ -144,8 +143,6 @@ func SafeGetFromInterface(i interface{}, selector string) interface{} {
 		}
 
 		data := expression.Get(obj)
-
-		Logger.Info(fmt.Sprintf("data found: %v",pretty.JSON(data)))
 
 		if IsNullOrEmpty(data) {
 			return nil
