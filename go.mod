@@ -14,6 +14,7 @@ require (
 )
 
 require (
+	github.com/iancoleman/strcase v0.2.0
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/ohler55/ojg v1.14.5
 	go.uber.org/atomic v1.7.0 // indirect
