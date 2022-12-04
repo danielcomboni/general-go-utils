@@ -17,10 +17,12 @@ import (
 
 var Logger *zap.Logger
 
-func Initialize(shouldLogToFile ...bool) {
+var ShouldLogToFile  = false
+
+func Initialize() {
 	fmt.Println(runtime.GOOS)
 
-	if len(shouldLogToFile) > 0 && shouldLogToFile[0] {
+	if ShouldLogToFile {
 
 		// initialize the rotator
 		logFile := "logs/app-%Y-%m-%d-%H.log"
