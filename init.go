@@ -19,10 +19,21 @@ var Logger *zap.Logger
 
 var ShouldLogToFile  = false
 
+func ReInitializeLoggingWithFileSyncEnabled(){
+	ShouldLogToFile = true
+	Initialize()
+}
+
+
 func Initialize() {
 	fmt.Println(runtime.GOOS)
 
 	if ShouldLogToFile {
+
+		println()
+		println("----------------------------")
+		Logger.Info("Logging to both console and file")
+		println()
 
 		// initialize the rotator
 		logFile := "logs/app-%Y-%m-%d-%H.log"
