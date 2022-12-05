@@ -13,3 +13,7 @@
 func ToSnakeCase(s string) string {
 	return strcase.ToSnake(s)
 }
+
+func ToCamelCase(s string) string {
+	return strcase.ToCamel(s)
+}
