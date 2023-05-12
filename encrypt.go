@@ -1,6 +1,7 @@
 package general_goutils
 
 import (
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"os"
 )
@@ -12,7 +13,9 @@ func HashPassword(password string) (string, error) {
 	Logger.Info("hashing password")
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	if err != nil {
-		return "failed to hash password", err
+		msg := "failed to hash password"
+		Logger.Error(fmt.Sprintf("%v --> ", err.Error()))
+		return msg, err
 	}
 	return string(bytes), nil
 }
@@ -21,7 +24,7 @@ func CheckPassword(providedPassword, existingPassword string) (bool, string, err
 	Logger.Info("checking password match")
 	err := bcrypt.CompareHashAndPassword([]byte(existingPassword), []byte(providedPassword))
 	if err != nil {
-		Logger.Error("failed to match passwords: " + err.Error())
+		Logger.Error(fmt.Sprintf("failed to match passwords: %v", err.Error()))
 		return false, "wrong password", err
 	}
 	return true, "password match", nil
@@ -32,7 +35,7 @@ func IsPasswordHashed(password string) bool {
 	cost, err := bcrypt.Cost([]byte(password))
 
 	if err != nil {
-		Logger.Error("failed to find cost")
+		Logger.Warn(fmt.Sprintf("failed to find cost --> %v", err.Error()))
 		return false
 	}
 	return cost == 14
@@ -96,7 +99,7 @@ func createAppSettingsFile(isConfigDirPresent bool, encryptedConfig string) bool
 	return isCreated
 }
 
-//SaveEncryptedConfig saves encrypted config to disk
+// SaveEncryptedConfig saves encrypted config to disk
 func SaveEncryptedConfig(encryptedConfig string) {
 	// createAppSettingsFile(createConfigurationsDirectory(), encryptedConfig)
 }
