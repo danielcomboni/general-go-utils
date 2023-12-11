@@ -1,3 +1,3 @@
 ```console
-go get github.com/danielcomboni/general-go-utils@v0.2.8
+go get github.com/danielcomboni/general-go-utils@v0.3.0
 ```
