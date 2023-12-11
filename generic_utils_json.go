@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Jeffail/gabs"
 	"github.com/ohler55/ojg/jp"
 	"github.com/ohler55/ojg/oj"
 )
@@ -27,7 +28,7 @@ func SafeGetFromInterfaceGeneric[t any](i interface{}, selector string) any {
 	defer func() {
 
 		if err := recover(); err != nil {
-			Logger.Warn(fmt.Sprintf("data: %v", i))
+			Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 			Logger.Error("invalid selector: " + selector)
 		}
 
@@ -40,7 +41,7 @@ func SafeGetFromInterfaceGeneric[t any](i interface{}, selector string) any {
 		Logger.Error("failed to parse incoming jsonString for SafeGet operations")
 		Logger.Info("jsonString: " + jsonString)
 		Logger.Info("selector: " + selector)
-		Logger.Warn(fmt.Sprintf("data: %v", i))
+		Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 		Logger.Error("err: " + err.Error())
 
 		return *new(t)
@@ -49,7 +50,7 @@ func SafeGetFromInterfaceGeneric[t any](i interface{}, selector string) any {
 		if err != nil {
 			Logger.Error("failed to parse selector")
 			Logger.Info("selector: " + selector)
-			Logger.Warn(fmt.Sprintf("data: %v", i))
+			Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 			Logger.Error("err: " + err.Error())
 			return *new(t)
 		}
@@ -73,7 +74,7 @@ func SafeGetFromInterfaceGenericAndDeserialize[T any](i interface{}, selector st
 	defer func() {
 
 		if err := recover(); err != nil {
-			Logger.Warn(fmt.Sprintf("data: %v", i))
+			Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 			Logger.Error("invalid selector: " + selector)
 		}
 
@@ -86,7 +87,7 @@ func SafeGetFromInterfaceGenericAndDeserialize[T any](i interface{}, selector st
 		Logger.Error("failed to parse incoming jsonString for SafeGet operations")
 		Logger.Info("jsonString: " + jsonString)
 		Logger.Info("selector: " + selector)
-		Logger.Warn(fmt.Sprintf("data: %v", i))
+		Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 		Logger.Error("err: " + err.Error())
 
 		return *new(T)
@@ -95,7 +96,7 @@ func SafeGetFromInterfaceGenericAndDeserialize[T any](i interface{}, selector st
 		if err != nil {
 			Logger.Error("failed to parse selector")
 			Logger.Info("selector: " + selector)
-			Logger.Warn(fmt.Sprintf("data: %v", i))
+			Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 			Logger.Error("err: " + err.Error())
 			return *new(T)
 		}
@@ -117,13 +118,18 @@ func SafeGetFromInterfaceGenericAndDeserialize[T any](i interface{}, selector st
 
 }
 
+func getData(i interface{}) string {
+	consume, _ := gabs.Consume(i)
+	return consume.String()
+}
+
 func SafeGetFromInterface(i interface{}, selector string) interface{} {
 
 	defer func() {
 
 		if err := recover(); err != nil {
-			msg := fmt.Sprintf("invalid selector: %v data: %v and err: %v", selector, i, err)
-			Logger.Warn(fmt.Sprintf("data: %v", i))
+			msg := fmt.Sprintf("invalid selector: %v data: %v and err: %v", selector, getData(i), err)
+			Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 			Logger.Error(msg)
 		}
 
@@ -136,7 +142,7 @@ func SafeGetFromInterface(i interface{}, selector string) interface{} {
 		Logger.Error("failed to parse incoming jsonString for SafeGet operations")
 		Logger.Info("jsonString: " + jsonString)
 		Logger.Info("selector: " + selector)
-		Logger.Warn(fmt.Sprintf("data: %v", i))
+		Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 		Logger.Error("err: " + err.Error())
 		return nil
 	} else {
@@ -144,7 +150,7 @@ func SafeGetFromInterface(i interface{}, selector string) interface{} {
 		if err != nil {
 			Logger.Error("failed to parse selector")
 			Logger.Info("selector: " + selector)
-			Logger.Warn(fmt.Sprintf("data: %v", i))
+			Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 			Logger.Error("err: " + err.Error())
 			return nil
 		}
@@ -172,7 +178,7 @@ func SafeGetFromInterfaceErrorCaught(i interface{}, selector string) (interface{
 		Logger.Error("failed to parse incoming jsonString for SafeGet operations")
 		Logger.Info("jsonString: " + jsonString)
 		Logger.Info("selector: " + selector)
-		Logger.Warn(fmt.Sprintf("data: %v", i))
+		Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 		Logger.Error("err: " + err.Error())
 		return nil, err
 	} else {
@@ -180,7 +186,7 @@ func SafeGetFromInterfaceErrorCaught(i interface{}, selector string) (interface{
 		if err != nil {
 			Logger.Error("failed to parse selector")
 			Logger.Info("selector: " + selector)
-			Logger.Warn(fmt.Sprintf("data: %v", i))
+			Logger.Warn(fmt.Sprintf("data: %v", getData(i)))
 			Logger.Error("err: " + err.Error())
 			return nil, err
 		}
@@ -198,7 +204,7 @@ func SafeGet(jsonString string, selector string) interface{} {
 		Logger.Error("failed to parse incoming jsonString for SafeGet operations")
 		Logger.Info("jsonString: " + jsonString)
 		Logger.Info("selector: " + selector)
-		Logger.Warn(fmt.Sprintf("data: %v", jsonString))
+		Logger.Warn(fmt.Sprintf("data: %v", getData(jsonString)))
 		Logger.Error("err: " + err.Error())
 		return nil
 	} else {
@@ -206,7 +212,7 @@ func SafeGet(jsonString string, selector string) interface{} {
 		if err != nil {
 			Logger.Error("failed to parse selector")
 			Logger.Info("selector: " + selector)
-			Logger.Warn(fmt.Sprintf("data: %v", jsonString))
+			Logger.Warn(fmt.Sprintf("data: %v", getData(jsonString)))
 			Logger.Error("err: " + err.Error())
 			return nil
 		}
@@ -231,7 +237,7 @@ func SafeGetMarshalled(jsonString string, selector string) []byte {
 		Logger.Error("failed to parse incoming jsonString for SafeGet operations")
 		Logger.Info("jsonString: " + jsonString)
 		Logger.Info("selector: " + selector)
-		Logger.Warn(fmt.Sprintf("data: %v", jsonString))
+		Logger.Warn(fmt.Sprintf("data: %v", getData(jsonString)))
 		Logger.Error("err: " + err.Error())
 		return nil
 	} else {
@@ -239,7 +245,7 @@ func SafeGetMarshalled(jsonString string, selector string) []byte {
 		if err != nil {
 			Logger.Error("failed to parse selector")
 			Logger.Info("selector: " + selector)
-			Logger.Warn(fmt.Sprintf("data: %v", jsonString))
+			Logger.Warn(fmt.Sprintf("data: %v", getData(jsonString)))
 			Logger.Error("err: " + err.Error())
 			return nil
 		}
@@ -265,7 +271,7 @@ func SafeGetToString(jsonString string, selector string) string {
 		Logger.Error("failed to parse incoming jsonString for SafeGet operations")
 		Logger.Info("jsonString: " + jsonString)
 		Logger.Info("selector: " + selector)
-		Logger.Warn(fmt.Sprintf("data: %v", jsonString))
+		Logger.Warn(fmt.Sprintf("data: %v", getData(jsonString)))
 		Logger.Error("err: " + err.Error())
 		return ""
 	} else {
@@ -273,7 +279,7 @@ func SafeGetToString(jsonString string, selector string) string {
 		if err != nil {
 			Logger.Error("failed to parse selector")
 			Logger.Info("selector: " + selector)
-			Logger.Warn(fmt.Sprintf("data: %v", jsonString))
+			Logger.Warn(fmt.Sprintf("data: %v", getData(jsonString)))
 			Logger.Error("err: " + err.Error())
 			return ""
 		}

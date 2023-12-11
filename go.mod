@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/Jeffail/gabs v1.4.0
+	github.com/google/uuid v1.4.0
 	go.uber.org/zap v1.24.0
 )
 
