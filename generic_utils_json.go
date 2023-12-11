@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/ohler55/ojg/pretty"
-
 	"github.com/ohler55/ojg/jp"
 	"github.com/ohler55/ojg/oj"
 )
@@ -124,7 +122,8 @@ func SafeGetFromInterface(i interface{}, selector string) interface{} {
 	defer func() {
 
 		if err := recover(); err != nil {
-			msg := fmt.Sprintf("invalid selector: %v data: %v and err: %v", selector, pretty.JSON(i), err)
+			msg := fmt.Sprintf("invalid selector: %v data: %v and err: %v", selector, i, err)
+			Logger.Warn(fmt.Sprintf("data: %v", i))
 			Logger.Error(msg)
 		}
 
